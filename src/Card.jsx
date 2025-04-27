@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 
-function Card({ handleName, handleClearAll, handleMoney, id, name,  increment, reset, decrement, counter, price }) {
+function Card({ handleName, handleClearAll, handleMoney, handleDelete, id, name,  increment, reset, decrement, counter, price }) {
     
     const [named, setNamed] = useState(true);
     const inputRef = useRef(null); // for h1 input
@@ -68,7 +68,7 @@ function Card({ handleName, handleClearAll, handleMoney, id, name,  increment, r
         <div key={id} id={id.toString()} className="option">
             <div className="top-option">
                 {named ? h1Named : h1NotNamed}
-                <span className="x-button" onClick={handleClearAll}>&#10005;</span>
+                <span className="x-button" onClick={handleDelete}>&#10005;</span>
             </div>
             <h2>{counter}</h2>
             {priceStatic ? priceIsStatic : priceIsNotStatic}

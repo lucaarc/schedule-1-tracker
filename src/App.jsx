@@ -84,6 +84,9 @@ function App() {
     function handleClearAll() {
       setCounterList(prevList => prevList.map(c => ({...c, val:0})))
     }    
+    function handleDelete(index) {
+      setCounterList(prevList => prevList.filter(c => c.id != index))
+    }
 
     return(
     <>
@@ -125,7 +128,7 @@ function App() {
         price={i.price}
         handleName={handleNameChange}
         handleMoney={handleMoneyChange}
-        handleClearAll={()=>handleClearAll(i.id)}
+        handleDelete={()=>handleDelete(i.id)}
       />
       )}
     </div>
