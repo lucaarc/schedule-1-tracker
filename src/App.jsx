@@ -81,11 +81,8 @@ function App() {
       setCounterList(c => [...c, {id:publicID, name:"New Counter", val:0, price:0}])
       setPublicID(prev => prev+1)
     }
-    function handleDelete(index) {
-      setCounterList(prevList => prevList.filter(c => c.id!=index));
-    }
     function handleClearAll() {
-      setCounterList(prevList => [])
+      setCounterList(prevList => prevList.map(c => ({...c, val:0})))
     }    
 
     return(
@@ -128,7 +125,7 @@ function App() {
         price={i.price}
         handleName={handleNameChange}
         handleMoney={handleMoneyChange}
-        handleDelete={()=>handleDelete(i.id)}
+        handleClearAll={()=>handleClearAll(i.id)}
       />
       )}
     </div>

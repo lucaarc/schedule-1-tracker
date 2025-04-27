@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, { useState, useEffect, useRef } from "react"
 
-function Card(props) {
+function Card({ handleName, handleClearAll, handleMoney, id, name,  increment, reset, decrement, counter, price }) {
     
     const [named, setNamed] = useState(true);
-    const inputRef = useRef(null); // for h1
-    const inputRef2 = useRef(null); // for the money setter thingy
+    const inputRef = useRef(null); // for h1 input
+    const inputRef2 = useRef(null); // for the money setter input
     function nameChange() {
         setNamed(false);
     };
@@ -28,7 +28,7 @@ function Card(props) {
     function nameSubmit(newName) {
         if (newName != "") {
             setNamed(true);
-            props.handleName(props.id,newName);
+            handleName(id,newName);
         };
     };
 
@@ -39,7 +39,7 @@ function Card(props) {
     function priceSubmit(newPrice) {
         if (newPrice != "") {
             setPriceStatic(true);
-            props.handleMoney(props.id,newPrice);
+            handleMoney(id,newPrice);
         };  
     };
 
@@ -54,27 +54,27 @@ function Card(props) {
         }
     }, [priceStatic]);
     
+    //conditional things
+    const h1Named = <h1 onClick={nameChange}>{name}</h1> //normal h1
+    const h1NotNamed = <h1><input ref={inputRef} spellCheck="false" placeholder="Enter new name" className="name-input" type="text" onBlur={blurFunction} onKeyDown={keyDownFunction}/></h1> //h1 setter w the input
+
+    const priceIsStatic = <p>${counter*price}<br/><span className="price-clicker" onClick={priceChange}>${price}/pc</span></p> //normal price element
+    const priceIsNotStatic = <p>${counter*price}<br/><span>$<input ref={inputRef2} className="price-adjust" onBlur={blurFunction} onKeyDown={keyDownFunction} type="number"/>/pc</span></p> //price setter input
+
+
+
+
     return(
-        <div key={props.id} id={props.id.toString()} className="option">
+        <div key={id} id={id.toString()} className="option">
             <div className="top-option">
-                {named ?
-                    <h1 onClick={nameChange}>{props.name}</h1>
-                    :
-                    <h1><input ref={inputRef} spellCheck="false" placeholder="Enter new name" className="name-input" type="text" onBlur={blurFunction} onKeyDown={keyDownFunction}/></h1>
-                }
-                <span className="x-button" onClick={props.handleDelete}>&#10005;</span>
+                {named ? h1Named : h1NotNamed}
+                <span className="x-button" onClick={handleClearAll}>&#10005;</span>
             </div>
-            
-            
-            <h2>{props.counter}</h2>
-            {priceStatic ? 
-                <p>${props.counter*props.price}<br/><span className="price-clicker" onClick={priceChange}>${props.price}/pc</span></p>
-                :
-                <p>${props.counter*props.price}<br/><span>$<input ref={inputRef2} className="price-adjust" onBlur={blurFunction} onKeyDown={keyDownFunction} type="number"/>/pc</span></p>
-            }
+            <h2>{counter}</h2>
+            {priceStatic ? priceIsStatic : priceIsNotStatic}
             {(named && priceStatic) ? 
                 <div className="button-container">
-                    <button onClick={props.increment}>+</button> <button onClick={props.reset}>0</button> <button onClick={props.decrement}>-</button>
+                    <button onClick={increment}>+</button> <button onClick={reset}>0</button> <button onClick={decrement}>-</button>
                 </div>
                 :
                 <div className="button-container">
