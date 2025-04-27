@@ -1,9 +1,10 @@
-import React, {useState} from "react"
+import React, {useState, useEffect, useRef} from "react"
 
 function Card(props) {
     
-    //name change stuff
     const [named, setNamed] = useState(true);
+    const inputRef = useRef(null); // for h1
+    const inputRef2 = useRef(null); // for the money setter thingy
     function nameChange() {
         setNamed(false);
     };
@@ -41,6 +42,17 @@ function Card(props) {
             props.handleMoney(props.id,newPrice);
         };  
     };
+
+    useEffect(() => {
+        if (!named && inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [named]);
+    useEffect(() => {
+        if (!priceStatic && inputRef2.current) {
+            inputRef2.current.focus();
+        }
+    }, [priceStatic]);
     
     return(
         <div key={props.id} id={props.id.toString()} className="option">
@@ -48,7 +60,7 @@ function Card(props) {
                 {named ?
                     <h1 onClick={nameChange}>{props.name}</h1>
                     :
-                    <h1><input spellCheck="false" placeholder="Enter new name" className="name-input" type="text" onBlur={blurFunction} onKeyDown={keyDownFunction}/></h1>
+                    <h1><input ref={inputRef} spellCheck="false" placeholder="Enter new name" className="name-input" type="text" onBlur={blurFunction} onKeyDown={keyDownFunction}/></h1>
                 }
                 <span className="x-button" onClick={props.handleDelete}>&#10005;</span>
             </div>
@@ -58,7 +70,7 @@ function Card(props) {
             {priceStatic ? 
                 <p>${props.counter*props.price}<br/><span className="price-clicker" onClick={priceChange}>${props.price}/pc</span></p>
                 :
-                <p>${props.counter*props.price}<br/><span>$<input className="price-adjust" onBlur={blurFunction} onKeyDown={keyDownFunction} type="number"/>/pc</span></p>
+                <p>${props.counter*props.price}<br/><span>$<input ref={inputRef2} className="price-adjust" onBlur={blurFunction} onKeyDown={keyDownFunction} type="number"/>/pc</span></p>
             }
             {(named && priceStatic) ? 
                 <div className="button-container">
